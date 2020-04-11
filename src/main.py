@@ -1,25 +1,10 @@
-import machine
-import time
-from machine import ADC
-
-#setup
-led = machine.Pin(25, machine.Pin.OUT) # LED on the board
-adc = ADC(machine.Pin(34))
-adc.atten(ADC.ATTN_11DB)
-#loop
-while True:
-  if led.value() == 0:
-    led.value(1)
-    boton_adc = adc.read()
-    if boton_adc < 1000:
-      print('Boton Rojo')
-    elif (boton_adc > 1000 and boton_adc < 2600):
-      print('Boton Azul')
-    elif (boton_adc > 2600 and boton_adc < 3200):
-      print('Boton Blanco')
-    else:
-      print('Ningun boton')
-    
-  else:
-    led.value(0)
-  time.sleep(0.5)
+from machine import Pin, SPI
+import st7920
+spi = SPI(1)
+screen = st7920.Screen(sck=Pin(14), mosi=Pin(13), miso=Pin(12), spi=1, slaveSelectPin=Pin(15), resetDisplayPin=Pin(5))
+screen.plot(5, 5)
+screen.line(10, 10, 15, 15)
+screen.rect(20, 20, 25, 25)
+screen.fill_rect(30, 30, 40, 40)
+screen.fill_rect(32, 32, 38, 38, False)
+screen.redraw()
